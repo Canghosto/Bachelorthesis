@@ -1,0 +1,2 @@
+
+-DCMAKE_VERBOSE_MAKEFILE=ON -DCATKIN_DEVEL_PREFIX=/home/can/Schreibtisch/Bachelorarbeit/imuROS/devel -DCMAKE_INSTALL_PREFIX=/home/can/Schreibtisch/Bachelorarbeit/imuROS/install -G Unix Makefiles

@@ -1,0 +1,22 @@
+Operating voltage/Power supply 3.0V - 3.6V nicht häher gehen, ansonsten geht die hardware kaputt
+Betriebsstrom: durchschnitt 80mA
+
+
+Stromverbrauch beim ESP32-WROOM MOduls - abgelesen
+-Deepsleep 			7 µA
+-Lightsleep 			1 mA
+-Normal (240 MHz) 		50 mA
+-Reduzierter Takt (3 MHz) 	3,8 mA
+-WiFi-Betrieb 			80-180 mA
+
+
+
+https://arduino-hannover.de/2018/07/11/esp32-mit-batteriebetrieb/
+
+
+Datasheet:
+Operating voltage			3.0V - 3.6
+Betriebsstrom				durchschnittlich 80ma
+Vom Netzteil gelieferter Mindeststrom 	500ma
+
+ 
