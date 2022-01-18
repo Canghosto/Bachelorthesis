@@ -106,7 +106,7 @@ bool Adafruit_MPU6050::_init(int32_t sensor_id) {
 
   setFilterBandwidth(MPU6050_BAND_260_HZ);
 
-  setGyroRange(MPU6050_RANGE_500_DEG);
+  setGyroRange(MPU6050_RANGE_2000_DEG);
 
   setAccelerometerRange(MPU6050_RANGE_2_G); // already the default
 
@@ -566,9 +566,9 @@ void Adafruit_MPU6050::fillGyroEvent(sensors_event_t *gyro,
   gyro->sensor_id = _sensorid_gyro;
   gyro->type = SENSOR_TYPE_GYROSCOPE;
   gyro->timestamp = timestamp;
-  gyro->gyro.x = gyroX * SENSORS_DPS_TO_RADS;
-  gyro->gyro.y = gyroY * SENSORS_DPS_TO_RADS;
-  gyro->gyro.z = gyroZ * SENSORS_DPS_TO_RADS;
+  gyro->gyro.x = gyroX ;//* SENSORS_DPS_TO_RADS;
+  gyro->gyro.y = gyroY ;//* SENSORS_DPS_TO_RADS;
+  gyro->gyro.z = gyroZ ;//* SENSORS_DPS_TO_RADS;
 }
 
 /*!

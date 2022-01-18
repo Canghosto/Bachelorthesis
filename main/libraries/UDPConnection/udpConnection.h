@@ -14,16 +14,16 @@ public:
     UDPCONNECTION();
     enum PACKET_ID {
             fingers = 1,
-            thumb,
-            palm
+            thumb=2,
+            palm=3
         };
-    
+
     void setupWiFi(const char* ssid,
                               const char* passphrase,
                               const IPAddress& ip,
                               const uint16_t targetPort,
                               const char* username);
-                              
+
     /*
     void setupAsAP(const char* ssid,const char* passphrase);
     */
@@ -40,8 +40,7 @@ private:
     IPAddress ipAddress;
     //WebServer server;
     uint16_t ipPort;
-    char buffer[100];
-    char palmBuffer[150];
+    char buffer[125];
     WiFiUDP wifiUdp;
 
 };

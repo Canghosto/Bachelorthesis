@@ -4,6 +4,11 @@
 #include "MPU9250.h"
 #include "udpConnection.h"
 
+UDPCONNECTION udp;
+UDPCONNECTION::PACKET_ID fingers = UDPCONNECTION::PACKET_ID::fingers;
+UDPCONNECTION::PACKET_ID thumb = UDPCONNECTION::PACKET_ID::thumb;
+UDPCONNECTION::PACKET_ID palm = UDPCONNECTION::PACKET_ID::palm;
+
 //Wifi Network
 const char* ssid = "SSID";
 const char* username = "@studium.com";
@@ -14,14 +19,9 @@ const char* udpAddress = "eduroam";
 uint16_t udpPort = 8080;
 IPAddress ipAddress(192,168,178,25);
 
-UDPCONNECTION udp;
 
-char buffer[100];
-char palmBuffer[150];
+char buffer[125];
 
-UDPCONNECTION::PACKET_ID fingers = UDPCONNECTION::PACKET_ID::fingers;
-UDPCONNECTION::PACKET_ID thumb = UDPCONNECTION::PACKET_ID::thumb;
-UDPCONNECTION::PACKET_ID palm = UDPCONNECTION::PACKET_ID::palm;
 
 
 //Mulitplexer Address
@@ -121,7 +121,6 @@ void identifyIMU(){
         if (!Wire.endTransmission()) {
           Serial.print("Found I2C 0x");  Serial.println(addr,HEX);
           if(addr != 0xC){
-          foundIMU[t] = true;
           initMPU(t);
           Serial.println(addr);
           }
@@ -165,35 +164,21 @@ void setup(){
 sensors_event_t a, g, temp;
 
 bool readMPUFinger(uint8_t port, char* buf, int seq){
+  tcaselect(port);
   memset(&buffer[0], 0, sizeof(buffer));
   mpuFinger[port].getEvent(&a, &g, &temp);
-  sprintf(buf, "%d %d accel %0.3f %0.3f %0.3f gyro %0.3f %0.3f %0.3f  "
+  sprintf(buf, " %d %d accel %0.3f %0.3f %0.3f gyro %0.3f %0.3f %0.3f"
              , seq, port
              , a.acceleration.x, a.acceleration.y, a.acceleration.z
              , g.gyro.x, g.gyro.y, g.gyro.z);
-  //Serial.println(buf);
-
-  /* Print out the values */
-  //Serial.print("IMU Port: ");Serial.println(port);
-  //Serial.print("Acceleration X: ");
-  //Serial.print(a.acceleration.x);
-  //Serial.print(", Y: ");
-  //Serial.print(a.acceleration.y);
-  //Serial.print(", Z: ");
-  //Serial.print(a.acceleration.z);
-  //Serial.println(" m/s^2");
-
-  //Serial.print("Rotation X: ");Serial.print(g.gyro.x);
-  //Serial.print(", Y: ");Serial.print(g.gyro.y);
-  //Serial.print(", Z: ");Serial.print(g.gyro.z);
-  //Serial.println(" rad/s");
   return true;
 }
 
 bool readMPUThumb(uint8_t port, char* buf, int seq){
+  tcaselect(port);
   memset(&buffer[0], 0, sizeof(buffer));
   mpuFinger[port].getEvent(&a, &g, &temp);
-  sprintf(buf, "%d %d accel %0.3f %0.3f %0.3f gyro %0.3f %0.3f %0.3f "
+  sprintf(buf, " %d %d accel %0.3f %0.3f %0.3f gyro %0.3f %0.3f %0.3f"
              , seq, port
              , a.acceleration.x, a.acceleration.y, a.acceleration.z
              , g.gyro.x, g.gyro.y, g.gyro.z);
@@ -201,9 +186,10 @@ bool readMPUThumb(uint8_t port, char* buf, int seq){
 }
 
 bool readMPUCore(uint8_t port, char* buf, int seq){
-  memset(&palmBuffer[0], 0, sizeof(palmBuffer));
+  tcaselect(port);
+  memset(&buffer[0], 0, sizeof(buffer));
   if (coreMPU.update()) {
-    sprintf(buf, "%d %d accel %0.3f %0.3f %0.3f gyro %0.3f %0.3f %0.3f mag %0.2f %0.2f %0.2f "
+    sprintf(buf, " %d %d accel %0.3f %0.3f %0.3f gyro %0.3f %0.3f %0.3f mag %0.2f %0.2f %0.2f"
                  , seq, port
                  , coreMPU.getLinearAccX(), coreMPU.getLinearAccY(),coreMPU.getLinearAccZ()
                  , coreMPU.getGyroX(), coreMPU.getGyroY(), coreMPU.getGyroZ()
@@ -214,26 +200,17 @@ bool readMPUCore(uint8_t port, char* buf, int seq){
 }
 
 void loop(){
-   static uint32_t prev_ms = millis();
-  if (millis() > prev_ms + 1) {
-  
   for(uint8_t i=0; i<8; i++){
         if(foundIMU[i] == 1 && readMPUFinger(i, buffer, seq)){
-            tcaselect(i);
             udp.sendImuData(fingers ,buffer, i);
-            prev_ms = millis();
             seq = (seq + 1) % 255; 
         }else if(foundIMU[i] == 2 && readMPUThumb(i, buffer, seq)){
-            tcaselect(i);
             udp.sendImuData(thumb, buffer, i);
-            prev_ms = millis();
             seq = (seq + 1) % 255;  
-        }else if(foundIMU[i] == 3 && readMPUCore(i, palmBuffer, seq)){
-            tcaselect(i);
-            udp.sendImuData(palm, palmBuffer, i);
-            prev_ms = millis();
+        }else if(foundIMU[i] == 3 && readMPUCore(i, buffer, seq)){
+            udp.sendImuData(palm, buffer, i);
             seq = (seq + 1) % 255; 
         } 
     }
-  }
+  
 }

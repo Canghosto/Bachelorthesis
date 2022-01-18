@@ -60,67 +60,27 @@ void UDPCONNECTION::setupAsAP(const char* ssid,const char* passphrase = NULL){
 void UDPCONNECTION::sendImuData(PACKET_ID imuPosition, char* data , uint8_t imuID){
 
     uint8_t count = writeHeader(imuPosition, imuID);
-    if(imuPosition == 3){
-
-      palmBuffer[count++] = imuID;
-      memcpy(palmBuffer + count, data, 90);
-      count +=90;
-      sendBuffer(imuPosition , count);
-      memset(&palmBuffer[0], 0, sizeof(palmBuffer));
-    }
-    else{
-
-      buffer[count++] = imuID;
-      memcpy(buffer + count, data, 70);
-      count +=70;
-      sendBuffer(imuPosition , count);
-      memset(&buffer[0], 0, sizeof(buffer));
-
-    }
+    memcpy(buffer + count, data, 100);
+    count +=100;
+    sendBuffer(imuPosition , sizeof(buffer));
+    memset(&buffer[0], 0, sizeof(buffer));
 }
 
 uint8_t UDPCONNECTION::writeHeader(PACKET_ID imuPosition, uint8_t imuID){
-    if (imuPosition == 3){
-      palmBuffer[0] = imuPosition;
-      palmBuffer[1] = imuID;
-    }else{
-      buffer[0] = imuPosition;
-      buffer[1] = imuID;
-    }
-
-    return 2;
+    buffer[0] = imuPosition;
+    //buffer[1] = imuID;
+    return 1;
 }
 
 void UDPCONNECTION::sendBuffer(PACKET_ID imuPosition,uint8_t length){
   if(getStatusWifi() || getStatusAP()){
     wifiUdp.beginPacket(ipAddress, ipPort);
-    if (imuPosition == PACKET_ID::palm)
-    {
-      wifiUdp.printf(palmBuffer, length);
-    }else{
-      wifiUdp.printf(buffer, length);
-
-    }
+    wifiUdp.printf(buffer, length);
     wifiUdp.endPacket();
-    /*
-    for (int i = 0; i < sizeof(buffer); i++) Serial.print(buffer[i]);
-    Serial.println(" ");
-    */
-  } else {
-    //Serial.println(Serial.available());
-    //if (Serial.available() > 0) {
-        if (imuPosition == PACKET_ID::palm)
-        {
 
-          //Serial.write(palmBuffer, length);
-          Serial.write(palmBuffer);
-          Serial.println("");
-        }else{
-          Serial.write(buffer, length);
-          Serial.println("");
-        }
-      //}
-
+  }else{
+    Serial.write(buffer);
+    Serial.println("");
   }
 }
 
