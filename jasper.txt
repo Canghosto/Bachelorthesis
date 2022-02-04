@@ -1,0 +1,3 @@
+https://github.com/bit-bots/bitbots_imu_dxl
+https://github.com/ccny-ros-pkg/imu_tools
+jasper.gueldenstein@uni-hamburg.de
