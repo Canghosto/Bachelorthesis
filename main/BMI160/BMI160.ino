@@ -63,7 +63,7 @@ void initIMU(uint8_t imuID){
       Serial.println("Check for MPU9250");
       if(coreMPU.setup(0x68, setting9250)){
          Serial.println("Found MPU-9250");
-         foundIMU[imuID] = 2;
+         foundIMU[imuID] = 3;
        }
        else{
           Serial.println(F("Failed to find MPU9250 chip"));
@@ -95,15 +95,20 @@ void identifyIMU(){
       }
     }
 }
+
 void setup(){
   Wire.begin();
   //Set the frequency to 400kHz
-  //Wire.setClock(400000UL);
+  setCpuFrequencyMhz(1);
+  Wire.setClock(400000UL);
   Serial.begin(115200);
   delay(100);
   
-  //Setup the WiFi connection and check if wifi or cable is required
-  //udp.setupWiFi(ssid, pwd, ipAddress, udpPort, username);
+  //Set Wifi connection, if Glove is wireless
+  if(!Serial){
+      udp.setupWiFi(ssid, pwd, ipAddress, udpPort, username);
+      //udp.setupAsAP(ssid, pwd);
+  }
     
   Serial.println("\nTCAScanner ready!");
 
@@ -113,9 +118,7 @@ void setup(){
   setting9250.mag_output_bits = MAG_OUTPUT_BITS::M16BITS;
   setting9250.fifo_sample_rate = FIFO_SAMPLE_RATE::SMPL_1000HZ;
   setting9250.gyro_fchoice = 0x03;
-  setting9250.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_250HZ;
   setting9250.accel_fchoice = 0x01;
-  setting9250.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_45HZ;
   
   
   //init the IMU sensors  
@@ -167,6 +170,10 @@ void loop(){
       seq = (seq + 1) % 255; 
     }
     else if(foundIMU[i] == 2 && readMPUCore(i, buffer, seq)){
+      udp.sendImuData(thumb ,buffer, i);
+      seq = (seq + 1) % 255; 
+      }
+    else if(foundIMU[i] == 3 && readMPUCore(i, buffer, seq)){
       udp.sendImuData(palm ,buffer, i);
       seq = (seq + 1) % 255; 
       }
