@@ -44,7 +44,6 @@ MPU9250Setting setting9250;
 */
 uint8_t foundIMU[8] = {0};
 int seq = 0;
-double freq = 0; 
 
 //TCA Selector
 void tcaselect(uint8_t i) {
@@ -53,28 +52,16 @@ void tcaselect(uint8_t i) {
   Wire.endTransmission();
 }
 
-
 void initMPU(uint8_t imuID){
   tcaselect(imuID);
   Serial.print("Initialize MPU6050: "); Serial.println(imuID);
   if (mpuFinger[imuID].begin()) {
     Serial.println("MPU6050 Found!");
-    /*
-    if (imuID == 1) {
-      Setting to 2(3-DoF), only for MPU6050. Right Hand,
-      //the MUX should show the closest to port 1.
-      foundIMU[imuID] = 2;
-    }
-    else{
-      Setting to 1(2-DoF).
-    }
-    */
     foundIMU[imuID] = 1;
     
+    //Set config for MPU-6050
     mpuFinger[imuID].setAccelerometerRange(MPU6050_RANGE_16_G);
     mpuFinger[imuID].setGyroRange(MPU6050_RANGE_2000_DEG);
-    mpuFinger[imuID].setFilterBandwidth(MPU6050_BAND_260_HZ); 
-    
   }
   else{
     Serial.print(F("Failed to find MPU6050 chip, mpu["));
@@ -86,7 +73,9 @@ void initMPU(uint8_t imuID){
       //Setting to 3(3-DoF with Mag).
       foundIMU[imuID] = 3;
       Serial.println("Found MPU9250");
+      
       /*
+      //Calibrating the MPU-9250
       Serial.println("Accel Gyro calibration will start in 5sec.");
       Serial.println("Please leave the device still on the flat plane.");
       coreMPU.verbose(true);
@@ -137,15 +126,16 @@ void setup(){
     Wire.begin();
     //Set the frequency to 400kHz
     setCpuFrequencyMhz(1);
-    Wire.setClock(1000000UL);
+    Wire.setClock(400000UL);
     Serial.begin(115200);
     while (!Serial);
     delay(1000);
 
-    //Setup the WiFi connection and check if wifi or cable is required
-    udp.setupWiFi(ssid, pwd, ipAddress, udpPort, username);
-    //udp.setupAsAP(ssid, pwd);
-    
+    //Set Wifi connection, if Glove is wireless
+    if(!Serial){
+        udp.setupWiFi(ssid, pwd, ipAddress, udpPort, username);
+        //udp.setupAsAP(ssid, pwd);
+    }
 
     Serial.println("\nTCAScanner ready!");
     
@@ -154,9 +144,7 @@ void setup(){
     setting9250.mag_output_bits = MAG_OUTPUT_BITS::M16BITS;
     setting9250.fifo_sample_rate = FIFO_SAMPLE_RATE::SMPL_1000HZ;
     setting9250.gyro_fchoice = 0x03;
-    //setting9250.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_250HZ;
     setting9250.accel_fchoice = 0x01;
-    //setting9250.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_45HZ;
     
     identifyIMU();
 
