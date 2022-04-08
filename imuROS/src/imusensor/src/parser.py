@@ -1,6 +1,7 @@
 import sys
 import io
 import struct
+import serial
 from enum import Enum
 
 HEADER = b
@@ -11,8 +12,7 @@ class PACKET_ID(Enum):
     palm = 3
 
 class Parser:
-
-    def __init__(self, filename, udpStatus)
+    def __init__(self, filename, udpStatus, serialPort = null, serialBaud = null):
         self.filename = filename
 
         if udpStatus:
@@ -37,18 +37,33 @@ class Parser:
         while True:
             yield self.parsing()
 
-    def read(self, count, fmt):
+    def getData(self, count, fmt):
         result = struct.stream.read(count)
         if fmt:
-                result = struct.unpack(fmt, result)[0]
-        return result
+                result = struct.unpack(fmt, result)[0].decode()
+                resultArr = result.split()
+                print(resultArr)
+        return resultArr
 
 
-    def parsing(self)
+    def parsing(self):
         timeStamp = self.read()
 
 
 
-class ImuEvent
 
-class ImuEventMag
+class ImuEvent:
+    def __init__(self, seqNum ,imuId):
+        #self.seqNum =
+        #self.imuId =
+        #self.accel =
+        self.gyro = getData(2)
+
+
+class ImuEventMag:
+    def __init__(self, seqNum, imuId):
+        #self.seqNum =
+        #self.imuId =
+        #self.accel =
+        self.gyro = getData(2)
+        self.mag = getData()

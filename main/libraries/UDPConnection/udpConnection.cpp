@@ -35,7 +35,7 @@ void UDPCONNECTION::setupWiFi(const char* ssid,
         ipPort = targetPort;
         Serial.println(ipAddress);
         Serial.println(targetPort);
-        //wifiUdp.begin(ipAddress);
+        wifiUdp.begin(ipPort);
       }
       else{
         Serial.println("Couldn't get a wifi connection! Running on Serial.");

@@ -9,7 +9,7 @@ UDPCONNECTION::PACKET_ID thumb = UDPCONNECTION::PACKET_ID::thumb;
 UDPCONNECTION::PACKET_ID palm = UDPCONNECTION::PACKET_ID::palm;
 
 //Wifi Network
-const char* ssid = "SSID";
+const char* ssid = "ssid";
 const char* username = "@studium.com";
 const char* pwd = "pwd";
 //UDP Address to send Data to.
@@ -98,14 +98,16 @@ void identifyIMU(){
 void setup(){
   Wire.begin();
   //Set the frequency to 400kHz
-  Wire.setClock(400000UL);
+  //Wire.setClock(400000UL);
   Serial.begin(115200);
   delay(100);
   
   //Setup the WiFi connection and check if wifi or cable is required
-  udp.setupWiFi(ssid, pwd, ipAddress, udpPort, username);
+  //udp.setupWiFi(ssid, pwd, ipAddress, udpPort, username);
     
   Serial.println("\nTCAScanner ready!");
+
+  
   setting9250.accel_fs_sel = ACCEL_FS_SEL::A16G;
   setting9250.gyro_fs_sel = GYRO_FS_SEL::G2000DPS;
   setting9250.mag_output_bits = MAG_OUTPUT_BITS::M16BITS;
@@ -114,7 +116,9 @@ void setup(){
   setting9250.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_250HZ;
   setting9250.accel_fchoice = 0x01;
   setting9250.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_45HZ;
-  //init the hardware bmin160  
+  
+  
+  //init the IMU sensors  
   identifyIMU();
     
   Serial.println("\ndone");

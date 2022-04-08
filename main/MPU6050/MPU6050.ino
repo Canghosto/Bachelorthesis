@@ -10,7 +10,7 @@ UDPCONNECTION::PACKET_ID thumb = UDPCONNECTION::PACKET_ID::thumb;
 UDPCONNECTION::PACKET_ID palm = UDPCONNECTION::PACKET_ID::palm;
 
 //Wifi Network
-const char* ssid = "SSID";
+const char* ssid = "ssid";
 const char* username = "@studium.com";
 const char* pwd = "pwd";
 
@@ -44,7 +44,7 @@ MPU9250Setting setting9250;
 */
 uint8_t foundIMU[8] = {0};
 int seq = 0;
-
+double freq = 0; 
 
 //TCA Selector
 void tcaselect(uint8_t i) {
@@ -72,7 +72,8 @@ void initMPU(uint8_t imuID){
     foundIMU[imuID] = 1;
     
     mpuFinger[imuID].setAccelerometerRange(MPU6050_RANGE_16_G);
-    //mpuFinger[imuID].setGyroRange(MPU6050_RANGE_2000_DEG);
+    mpuFinger[imuID].setGyroRange(MPU6050_RANGE_2000_DEG);
+    mpuFinger[imuID].setFilterBandwidth(MPU6050_BAND_260_HZ); 
     
   }
   else{
@@ -135,7 +136,8 @@ void identifyIMU(){
 void setup(){    
     Wire.begin();
     //Set the frequency to 400kHz
-    Wire.setClock(4000000UL);
+    setCpuFrequencyMhz(1);
+    Wire.setClock(1000000UL);
     Serial.begin(115200);
     while (!Serial);
     delay(1000);
@@ -152,9 +154,9 @@ void setup(){
     setting9250.mag_output_bits = MAG_OUTPUT_BITS::M16BITS;
     setting9250.fifo_sample_rate = FIFO_SAMPLE_RATE::SMPL_1000HZ;
     setting9250.gyro_fchoice = 0x03;
-    setting9250.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_250HZ;
+    //setting9250.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_250HZ;
     setting9250.accel_fchoice = 0x01;
-    setting9250.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_45HZ;
+    //setting9250.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_45HZ;
     
     identifyIMU();
 
