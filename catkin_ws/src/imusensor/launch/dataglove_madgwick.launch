@@ -1,5 +1,15 @@
 <launch>
 
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="dataglove_filter_imu_core" output="screen">
+        <param name="world_frame" value="enu"/>
+        <param name="fixed_frame" value="world"/>
+        <param name="use_mag" value="true"/>
+        <param name="publish_tf" value="true"/>
+        <param name="use_magnetic_field_msg" value="false"/>
+        <param name="orientation_stddev" value="0.05"/>
+        <param name="angular_scale" value="1.25"/>
+        <remap from="/imu/data" to="/imu/madgwick"/>
+    </node>
     <node pkg="imu_filter_madgwick" type="imu_filter_node" name="dataglove_filter_imu_thumb" output="screen">
         <param name="world_frame" value="enu"/>
         <param name="fixed_frame" value="world"/>
@@ -10,10 +20,70 @@
         <param name="angular_scale" value="1.25"/>
         <remap from="/imu/data" to="/imu/madgwick"/>
     </node>
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="dataglove_filter_imu_index" output="screen">
+        <param name="world_frame" value="enu"/>
+        <param name="fixed_frame" value="world"/>
+        <param name="use_mag" value="false"/>
+        <param name="publish_tf" value="true"/>
+        <param name="use_magnetic_field_msg" value="false"/>
+        <param name="orientation_stddev" value="0.05"/>
+        <param name="angular_scale" value="1.25"/>
+        <remap from="/imu/data" to="/imu/madgwick"/>
+    </node>
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="dataglove_filter_imu_middle" output="screen">
+        <param name="world_frame" value="enu"/>
+        <param name="fixed_frame" value="world"/>
+        <param name="use_mag" value="false"/>
+        <param name="publish_tf" value="true"/>
+        <param name="use_magnetic_field_msg" value="false"/>
+        <param name="orientation_stddev" value="0.05"/>
+        <param name="angular_scale" value="1.25"/>
+        <remap from="/imu/data" to="/imu/madgwick"/>
+    </node>
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="dataglove_filter_imu_ring" output="screen">
+        <param name="world_frame" value="enu"/>
+        <param name="fixed_frame" value="world"/>
+        <param name="use_mag" value="false"/>
+        <param name="publish_tf" value="true"/>
+        <param name="use_magnetic_field_msg" value="false"/>
+        <param name="orientation_stddev" value="0.05"/>
+        <param name="angular_scale" value="1.25"/>
+        <remap from="/imu/data" to="/imu/madgwick"/>
+    </node>
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="dataglove_filter_imu_little" output="screen">
+        <param name="world_frame" value="enu"/>
+        <param name="fixed_frame" value="world"/>
+        <param name="use_mag" value="false"/>
+        <param name="publish_tf" value="true"/>
+        <param name="use_magnetic_field_msg" value="false"/>
+        <param name="orientation_stddev" value="0.05"/>
+        <param name="angular_scale" value="1.25"/>
+        <remap from="/imu/data" to="/imu/madgwick"/>
+    </node>
+
+
+    <node name="CORE_imu_in_world_transform_publisher" pkg="tf"
+          type="static_transform_publisher"
+          args="0.2 0 0 0 0 0 world 0x00 1000" />
 
     <node name="TH_imu_in_world_transform_publisher" pkg="tf"
           type="static_transform_publisher"
           args="0.2 0 0 0 0 0 world 1 1000" />
 
+    <node name="IF_imu_in_world_transform_publisher" pkg="tf"
+          type="static_transform_publisher"
+          args="0.2 0 0 0 0 0 world 2 1000" />
+
+    <node name="MF_imu_in_world_transform_publisher" pkg="tf"
+          type="static_transform_publisher"
+          args="0.2 0 0 0 0 0 world 3 1000" />
+
+    <node name="RF_imu_in_world_transform_publisher" pkg="tf"
+          type="static_transform_publisher"
+          args="0.2 0 0 0 0 0 world 4 1000" />
+
+    <node name="LF_imu_in_world_transform_publisher" pkg="tf"
+          type="static_transform_publisher"
+          args="0.2 0 0 0 0 0 world 5 1000" />
 
 </launch>

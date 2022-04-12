@@ -68,15 +68,15 @@ class Parser:
             accelValues = [ax,ay,az]
             gyroValues = [gx,gy,gz]
             if imu_index == 1:
-                result = ImuEvent_TH(seq_number, imu_index, accelValues, gyroValues)
+                result = ImuEvent_TH(seq_number, 1, accelValues, gyroValues)
             elif imu_index == 2:
-                result = ImuEvent_ID(seq_number, imu_index, accelValues, gyroValues)
+                result = ImuEvent_ID(seq_number, 2, accelValues, gyroValues)
             elif imu_index == 3:
-                result = ImuEvent_MF(seq_number, imu_index, accelValues, gyroValues)
+                result = ImuEvent_MF(seq_number, 3, accelValues, gyroValues)
             elif imu_index == 4:
-                result = ImuEvent_RF(seq_number, imu_index, accelValues, gyroValues)
+                result = ImuEvent_RF(seq_number, 4, accelValues, gyroValues)
             elif imu_index == 5:
-                result = ImuEvent_PF(seq_number, imu_index, accelValues, gyroValues)
+                result = ImuEvent_LF(seq_number, 5, accelValues, gyroValues)
 
         elif data[0]== '\x03':
             (packet_id, seq_number, imu_index,
@@ -86,7 +86,7 @@ class Parser:
             accelValues = [ax,ay,az]
             gyroValues = [gx,gy,gz]
             magValues = [mx,my,mz]
-            result = ImuEventMag(seq_number, imu_index, accelValues, gyroValues, magValues)
+            result = ImuEventMag(seq_number, 0, accelValues, gyroValues, magValues)
         else:
             raise Exception('Invalid Header')
 
@@ -125,7 +125,7 @@ class ImuEvent_RF:
         self.accel_value = accelList
         self.gyro_value = gyroList
 
-class ImuEvent_PF:
+class ImuEvent_LF:
     def __init__(self, seqNum, imuId, accelList, gyroList):
         self.seqNum = seqNum
         self.imuId = imuId
