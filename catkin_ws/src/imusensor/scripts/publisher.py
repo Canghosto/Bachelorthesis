@@ -10,24 +10,23 @@ import mainparser as dataParser
 
 rospy.init_node('imuEvent', anonymous=True)
 imuValue_th = rospy.Publisher('/imu_event_th', msg.ImuEvent, queue_size=10)
-imuValue_id = rospy.Publisher('/imu_event_id', msg.ImuEvent, queue_size=10)
+imuValue_if = rospy.Publisher('/imu_event_id', msg.ImuEvent, queue_size=10)
 imuValue_mf = rospy.Publisher('/imu_event_mf', msg.ImuEvent, queue_size=10)
 imuValue_rf = rospy.Publisher('/imu_event_rf', msg.ImuEvent, queue_size=10)
 imuValue_lf = rospy.Publisher('/imu_event_lf', msg.ImuEvent, queue_size=10)
 imuValueMag = rospy.Publisher('/imu_event_core', msg.ImuEventMag, queue_size=10)
 
-data_source = rospy.get_param("~data_source", None)
 udpStatus = rospy.get_param("~udpStatus", False)
 seq_num = 0 & 255
 
 while True:
-    for data in dataParser.Parser(data_source, udpStatus):
+    for data in dataParser.Parser(udpStatus):
         if rospy.is_shutdown():
             break
         if isinstance(data, dataParser.ImuEvent_TH):
             imuValue_th.publish(rospy.Time.now(), data.seqNum, data.imuId, msg.AccelGyro(data.accel_value, data.gyro_value))
-        elif isinstance(data, dataParser.ImuEvent_ID):
-            imuValue_id.publish(rospy.Time.now(), data.seqNum, data.imuId, msg.AccelGyro(data.accel_value, data.gyro_value))
+        elif isinstance(data, dataParser.ImuEvent_IF):
+            imuValue_if.publish(rospy.Time.now(), data.seqNum, data.imuId, msg.AccelGyro(data.accel_value, data.gyro_value))
         elif isinstance(data, dataParser.ImuEvent_MF):
             imuValue_mf.publish(rospy.Time.now(), data.seqNum, data.imuId, msg.AccelGyro(data.accel_value, data.gyro_value))
         elif isinstance(data, dataParser.ImuEvent_RF):

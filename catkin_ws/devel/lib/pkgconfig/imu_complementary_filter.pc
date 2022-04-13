@@ -1,0 +1,8 @@
+prefix=/home/can/Schreibtisch/Bachelorthesis/catkin_ws/devel
+
+Name: imu_complementary_filter
+Description: Description of imu_complementary_filter
+Version: 1.2.3
+Cflags: -I/home/can/Schreibtisch/Bachelorthesis/catkin_ws/src/imu_tools/imu_complementary_filter/include
+Libs: -L${prefix}/lib -lcomplementary_filter
+Requires: message_filters roscpp sensor_msgs std_msgs tf
