@@ -1,2 +1,0 @@
-imusensor
--DCATKIN_DEVEL_PREFIX=/home/can/Schreibtisch/Bachelorthesis/imuROS/devel -DCMAKE_INSTALL_PREFIX=/home/can/Schreibtisch/Bachelorthesis/imuROS/install -G Unix Makefiles

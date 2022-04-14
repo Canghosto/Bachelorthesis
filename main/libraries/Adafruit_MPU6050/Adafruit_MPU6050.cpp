@@ -108,7 +108,7 @@ bool Adafruit_MPU6050::_init(int32_t sensor_id) {
 
   setGyroRange(MPU6050_RANGE_2000_DEG);
 
-  setAccelerometerRange(MPU6050_RANGE_2_G); // already the default
+  setAccelerometerRange(MPU6050_RANGE_4_G); // already the default
 
   Adafruit_BusIO_Register power_mgmt_1 =
       Adafruit_BusIO_Register(i2c_dev, MPU6050_PWR_MGMT_1, 1);

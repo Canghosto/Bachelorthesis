@@ -1,19 +1,22 @@
 <launch>
+
+    <param name="param" value="$(arg ~udpStatus)"/>
     <node pkg="imusensor" type="convertPublisher.py" name="convertedIMUData"/>
 
     <node pkg="imu_filter_madgwick" type="imu_filter_node" name="dataglove_filter_imu_core" output="screen">
         <param name="world_frame" value="enu"/>
         <param name="fixed_frame" value="world"/>
 
-        <param name="use_mag" value="true"/>
-        <param name="publish_tf" value="true"/>
-        <param name="use_magnetic_field_msg" value="false"/>
+        <param name="use_mag"     value="true" /> <!-- no compass on MPU-6050 / GY-521 -->
+        <param name="publish_tf"  value="true" />
+        <param name="reverse_tf"  value="false" />
+        <param name="constant_dt" value="0.0" />
         <param name="orientation_stddev" value="0.05"/>
         <param name="angular_scale" value="1.25"/>
-        <param name="remove_gravity_vector" value="true"/>
+        <param name="remove_gravity_vector" value="false" />  <!-- actual accel in world frame, kinetic branch or later-->
 
-         <param name="gain" value="0.3" /> 
-         <param name="zeta" value="0.0" />
+        <param name="gain"        value="0.3" />   <!-- range 0.0 (slow) .. 1.0 (fast and noisy) -->
+        <param name="zeta"        value="0.0" />   <!-- gyro drift gain, range 0.0 .. 1.0 -->
 
         <remap from="/imu/mag"  to="/imu_event_core_converted_mag/imu/mag" />
         <remap from="imu/data_raw" to="/imu_event_core_converted/imu/data_raw"/>
@@ -24,15 +27,16 @@
         <param name="world_frame" value="enu"/>
         <param name="fixed_frame" value="world"/>
 
-        <param name="use_mag" value="false"/>
-        <param name="publish_tf" value="true"/>
-        <param name="use_magnetic_field_msg" value="false"/>
+        <param name="use_mag"     value="false" /> <!-- no compass on MPU-6050 / GY-521 -->
+        <param name="publish_tf"  value="true" />
+        <param name="reverse_tf"  value="false" />
+        <param name="constant_dt" value="0.0" />
         <param name="orientation_stddev" value="0.05"/>
         <param name="angular_scale" value="1.25"/>
-        <param name="remove_gravity_vector" value="true"/>
+        <param name="remove_gravity_vector" value="true" />  <!-- actual accel in world frame, kinetic branch or later-->
 
-         <param name="gain" value="0.3" />
-         <param name="zeta" value="0.0" />
+        <param name="gain"        value="0.3" />   <!-- range 0.0 (slow) .. 1.0 (fast and noisy) -->
+        <param name="zeta"        value="0.0" />   <!-- gyro drift gain, range 0.0 .. 1.0 -->
 
         <remap from="imu/data_raw" to="/imu_event_th_converted/imu/data_raw"/>
         <remap from="imu/data" to="/imu_event_th_converted/imu/data_fused"/>
@@ -44,9 +48,9 @@
 
         <param name="use_mag" value="false"/>
         <param name="publish_tf" value="true"/>
-        <param name="use_magnetic_field_msg" value="false"/>
+
         <param name="orientation_stddev" value="0.05"/>
-        <param name="angular_scale" value="1.25"/>
+        <param name="angular_scale" value="1.5"/>
         <param name="remove_gravity_vector" value="true"/>
 
          <param name="gain" value="0.3" />
@@ -62,7 +66,7 @@
 
         <param name="use_mag" value="false"/>
         <param name="publish_tf" value="true"/>
-        <param name="use_magnetic_field_msg" value="false"/>
+
         <param name="orientation_stddev" value="0.05"/>
         <param name="angular_scale" value="1.25"/>
         <param name="remove_gravity_vector" value="true"/>
@@ -80,7 +84,7 @@
 
         <param name="use_mag" value="false"/>
         <param name="publish_tf" value="true"/>
-        <param name="use_magnetic_field_msg" value="false"/>
+
         <param name="orientation_stddev" value="0.05"/>
         <param name="angular_scale" value="1.25"/>
         <param name="remove_gravity_vector" value="true"/>
@@ -98,22 +102,22 @@
 
         <param name="use_mag" value="false"/>
         <param name="publish_tf" value="true"/>
-        <param name="use_magnetic_field_msg" value="false"/>
+
         <param name="orientation_stddev" value="0.05"/>
         <param name="angular_scale" value="1.25"/>
         <param name="remove_gravity_vector" value="true"/>
 
          <param name="gain" value="0.3" />
-         <param name="zeta" value="0.0" />
+         <param name="zeta" value="0.01" />
 
         <remap from="imu/data_raw" to="/imu_event_lf_converted/imu/data_raw"/>
         <remap from="imu/data" to="/imu_event_lf_converted/imu/data_fused"/>
     </node>
 
 
-    <node name="CORE_imu_in_world_transform_publisher" pkg="tf" output="screen"
+    <node name="CORE_imu_in_world_transform_publisher" pkg="tf"
           type="static_transform_publisher"
-          args="0.2 0 0 0 0 0 world 0 1000" />
+          args="0 0 0.04 1.571 0 -1.571 world 0 1000" />
 
     <node name="TH_imu_in_world_transform_publisher" pkg="tf" output="screen"
           type="static_transform_publisher"

@@ -1,9 +1,0 @@
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/_setup_util.py
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/env.sh
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/setup.bash
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/local_setup.bash
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/setup.sh
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/local_setup.sh
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/setup.zsh
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/local_setup.zsh
-/home/can/Schreibtisch/Bachelorarbeit/imuROS/install/.rosinstall

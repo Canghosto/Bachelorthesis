@@ -10,7 +10,7 @@ UDPCONNECTION::PACKET_ID thumb = UDPCONNECTION::PACKET_ID::thumb;
 UDPCONNECTION::PACKET_ID palm = UDPCONNECTION::PACKET_ID::palm;
 
 //Wifi Network
-const char* ssid = "ssid";
+const char* ssid = "SSID";
 const char* username = "@studium.com";
 const char* pwd = "pwd";
 
@@ -53,15 +53,17 @@ void tcaselect(uint8_t i) {
 }
 
 void initMPU(uint8_t imuID){
+  digitalWrite(5, HIGH);
   tcaselect(imuID);
   Serial.print("Initialize MPU6050: "); Serial.println(imuID);
   if (mpuFinger[imuID].begin()) {
     Serial.println("MPU6050 Found!");
     foundIMU[imuID] = 1;
-    
+
     //Set config for MPU-6050
     mpuFinger[imuID].setAccelerometerRange(MPU6050_RANGE_16_G);
     mpuFinger[imuID].setGyroRange(MPU6050_RANGE_2000_DEG);
+    mpuFinger[imuID].setFilterBandwidth(MPU6050_BAND_260_HZ);
   }
   else{
     Serial.print(F("Failed to find MPU6050 chip, mpu["));
@@ -73,7 +75,7 @@ void initMPU(uint8_t imuID){
       //Setting to 3(3-DoF with Mag).
       foundIMU[imuID] = 3;
       Serial.println("Found MPU9250");
-      
+
       /*
       //Calibrating the MPU-9250
       Serial.println("Accel Gyro calibration will start in 5sec.");
@@ -87,7 +89,7 @@ void initMPU(uint8_t imuID){
       coreMPU.calibrateMag();
       coreMPU.verbose(false);
       */
-      
+
     }
     else{
       Serial.println(F("Failed to find MPU9250 chip"));
@@ -97,6 +99,8 @@ void initMPU(uint8_t imuID){
       }
     }
   }
+
+  digitalWrite(5, LOW);
 }
 
 void identifyIMU(){
@@ -122,30 +126,35 @@ void identifyIMU(){
 
 
 // Standard Arduino setup()
-void setup(){    
+void setup(){
     Wire.begin();
     //Set the frequency to 400kHz
     setCpuFrequencyMhz(1);
     Wire.setClock(400000UL);
     Serial.begin(115200);
+
+    //Check if we read something in the Serial
+    udp.setupWiFi(ssid, pwd, ipAddress, udpPort, username);          //Can be set if wireless communication is needed
+      //udp.setupAsAP(ssid, pwd);
     while (!Serial);
     delay(1000);
 
+    pinMode(5, OUTPUT);
+
+
+    digitalWrite(5, LOW);
+
     //Set Wifi connection, if Glove is wireless
-    if(!Serial){
-        udp.setupWiFi(ssid, pwd, ipAddress, udpPort, username);
-        //udp.setupAsAP(ssid, pwd);
-    }
 
     Serial.println("\nTCAScanner ready!");
-    
+
     setting9250.accel_fs_sel = ACCEL_FS_SEL::A16G;
     setting9250.gyro_fs_sel = GYRO_FS_SEL::G2000DPS;
     setting9250.mag_output_bits = MAG_OUTPUT_BITS::M16BITS;
     setting9250.fifo_sample_rate = FIFO_SAMPLE_RATE::SMPL_1000HZ;
     setting9250.gyro_fchoice = 0x03;
     setting9250.accel_fchoice = 0x01;
-    
+
     identifyIMU();
 
     Serial.println("\ndone");
@@ -193,14 +202,14 @@ void loop(){
   for(uint8_t i=0; i<8; i++){
         if(foundIMU[i] == 1 && readMPUFinger(i, buffer, seq)){
             udp.sendImuData(fingers ,buffer, i);
-            seq = (seq + 1) % 255; 
+            seq = (seq + 1) % 255;
         }else if(foundIMU[i] == 2 && readMPUThumb(i, buffer, seq)){
             udp.sendImuData(thumb, buffer, i);
-            seq = (seq + 1) % 255;  
+            seq = (seq + 1) % 255;
         }else if(foundIMU[i] == 3 && readMPUCore(i, buffer, seq)){
             udp.sendImuData(palm, buffer, i);
-            seq = (seq + 1) % 255; 
-        } 
+            seq = (seq + 1) % 255;
+        }
     }
-  
+
 }
