@@ -3,6 +3,7 @@
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
+import math
 import rospy, tf
 import imusensor.msg as msg
 import mainparser as dataParser
@@ -10,6 +11,8 @@ from sensor_msgs.msg import Imu, MagneticField
 
 COVARIANCE_IDENTITY = (1, 0, 0, 0, 1, 0, 0, 0, 1)
 
+DEG2RAD = math.pi / 180.0
+RAD2DEG =  180 / math.pi
 
 rospy.init_node('imuEventConverter', anonymous=True)
 imuValue_th_converted = rospy.Publisher('/imu_event_th_converted/imu/data_raw', Imu, queue_size=10)
@@ -30,9 +33,9 @@ while True:
         accel_gyro.header.seq = data.seqNum
         accel_gyro.header.stamp = time
         accel_gyro.header.frame_id = str(data.imuId)
-        accel_gyro.angular_velocity.x = data.gyro_value[0]
-        accel_gyro.angular_velocity.y = data.gyro_value[1]
-        accel_gyro.angular_velocity.z = data.gyro_value[2]
+        accel_gyro.angular_velocity.x = data.gyro_value[0] * DEG2RAD
+        accel_gyro.angular_velocity.y = data.gyro_value[1] * DEG2RAD
+        accel_gyro.angular_velocity.z = data.gyro_value[2] * DEG2RAD
 #        accel_gyro.angular_velocity_covariance = COVARIANCE_IDENTITY
         accel_gyro.linear_acceleration.x = data.accel_value[0]
         accel_gyro.linear_acceleration.y = data.accel_value[1]
