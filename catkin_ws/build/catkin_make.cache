@@ -1,2 +1,0 @@
-imu_tools/imu_complementary_filter:imu_tools/imu_filter_madgwick:imu_tools/imu_tools:imu_tools/rviz_imu_plugin:imusensor
--DCATKIN_DEVEL_PREFIX=/home/can/Schreibtisch/Bachelorthesis/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/can/Schreibtisch/Bachelorthesis/catkin_ws/install -G Unix Makefiles

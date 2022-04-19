@@ -1,8 +1,0 @@
-prefix=/home/can/Schreibtisch/Bachelorthesis/catkin_ws/install
-
-Name: imusensor
-Description: Description of imusensor
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: rospy std_msgs message_runtime

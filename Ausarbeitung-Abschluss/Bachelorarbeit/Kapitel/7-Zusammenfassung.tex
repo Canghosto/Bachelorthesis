@@ -1,0 +1,15 @@
+\chapter{Zusammenfassung}
+
+
+
+Die heutige Technik besitzt mittlerweile viele technologische Errungenschaften um die charakteristische Bewegung verschiedener Körperteile zu ermitteln. Jedoch gehört die Hand mit ihren Fingern zu den Bereichen, die noch keinen richtigen Durchbruch erreicht haben, dabei bin ich auf einige der weiterentwickelten Modelle gestoßen, wie dem Manus Prime II und dem Forte Data Glove. \ref{alternativeDatenhandschuhe}
+\\
+Das Ziel dieser Bachelorarbeit war es zwei Datenhandschuhe zu gestalten und entwickeln, mit denen es möglich ist die charakteristische Bewegungen der Hand und den Fingern zu ermitteln. Dabei wurden der BMI160 und der MPU-6050 im Vergleich gestellt. Der Handschuh wurde auf Modularität entwickelt und mit den austauschbaren und auf die Länge anpassbaren Fingerhalterungen auf unterschiedliche Handtypen eingestellt.
+\\
+\\
+Für die Qualität der beiden Fingersensoren sind einige Unterschiede aufgekommen.
+Der BMI160 zeigte das dieser für den Gebrauch von solch einer hohen Auslastung nicht geeignet wäre, da sich die niedrige Datenrate auf die Qualität der Messungen bemerkbar macht und anschließend Orientierungswerte ausgibt mit starkem Rauschen.
+Der MPU-6050 zeigte jedoch starke Punkte für den Gebrauch als Datenhandschuh, da dieser eine hohe Datenrate und mit vernünftigen Werten arbeitet. Die Anwendung des Madgwick Filters erlaubte uns die relative Orientierung zu errechnen, dabei stießen wir auf die Erkenntnis das dieser nach eine Weile stark driften kann, jedoch zeigte der MPU-9250, das die Kompassdaten der Orientierung dabei aushilft weniger zu driften und stärker zu stabilisieren.\ref{fig:MagTrueAndFalse}
+\\
+\\
+Für zukünftige Weiterentwicklungen haben beide Handschuhe noch viele Verbesserungsmöglichkeiten. Für bessere Orientierung könnten die IMUs kalibriert werden oder die Messungen könnten mit einem kamerbasierten Ansatz und mithilfe der LEDs wirksamer getrackt werden. 

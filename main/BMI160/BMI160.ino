@@ -29,7 +29,7 @@ char buffer[125];
 
 
 uint8_t foundIMU[8] = {0};
-uint8_t seq = 0;
+int seq = 0;
 float radToDeg = 3.14/180.0;
 
 
@@ -45,7 +45,7 @@ void initIMU(uint8_t imuID){
   
     tcaselect(imuID);
     //Serial.print("Initialize BMI-160: "); Serial.println(imuID);
-
+  
     if (bmi160[imuID].softReset() != BMI160_OK){
       Serial.println("Reset False");
       while(1);
@@ -55,6 +55,11 @@ void initIMU(uint8_t imuID){
     if (bmi160[imuID].I2cInit(BMIADDR) == BMI160_OK){
       Serial.println("Found BMI-160");
       foundIMU[imuID] = 1;
+        if (bmi160[imuID].setStepPowerMode(bmi160[imuID].stepNormalPowerMode) != BMI160_OK){
+          Serial.println("set setStepPowerMode fail");
+          while(1);
+        }
+        
     }
     else{
       Serial.print(F("Failed to find BMI-160 chip, bmi["));
@@ -80,7 +85,7 @@ void identifyIMU(){
       tcaselect(t);
       
       Serial.print("TCA Port #"); Serial.println(t);
-      delay(1000);
+      //delay(1000);
 
       for (uint8_t addr = 0; addr<=127; addr++) {
         if (addr == TCAADDR) continue;
@@ -99,7 +104,6 @@ void identifyIMU(){
 void setup(){
   Wire.begin();
   //Set the frequency to 400kHz
-  setCpuFrequencyMhz(1);
   Wire.setClock(400000UL);
   Serial.begin(115200);
   delay(100);
@@ -113,7 +117,7 @@ void setup(){
   Serial.println("\nTCAScanner ready!");
 
   
-  setting9250.accel_fs_sel = ACCEL_FS_SEL::A16G;
+  setting9250.accel_fs_sel = ACCEL_FS_SEL::A2G;
   setting9250.gyro_fs_sel = GYRO_FS_SEL::G2000DPS;
   setting9250.mag_output_bits = MAG_OUTPUT_BITS::M16BITS;
   setting9250.fifo_sample_rate = FIFO_SAMPLE_RATE::SMPL_1000HZ;
@@ -127,21 +131,19 @@ void setup(){
   Serial.println("\ndone");
 }
 
-int16_t accelGyro[6]={0}; 
-uint8_t rslt1;
-uint8_t rslt2;
-bool readBMI(uint8_t port, char* buf, uint8_t sequenz){
+bool readBMI(uint8_t port, char* buf, int seq){
   tcaselect(port);
   memset(&buffer[0], 0, sizeof(buffer));
-  
+  uint8_t rslt;
+    
+  int16_t accelGyro[6]={0}; 
   //get both accel and gyro data from bmi160
   //parameter accelGyro is the pointer to store the data
-  rslt1 = bmi160[port].getGyroData(accelGyro);
-  rslt2 = bmi160[port].getAccelData(accelGyro + 3);
-  if(rslt1 | rslt2 == 0){
-    sprintf(buf, "%d %d accel %0.3f %0.3f %0.3f gyro %0.3f %0.3f %0.3f "
-               , sequenz, port
-               , accelGyro[3]/163.840, accelGyro[4]/163.840, accelGyro[5]/163.840
+  rslt = bmi160[port].getAccelGyroData(accelGyro);
+  if(rslt == 0){
+    sprintf(buf, " %d %d accel %0.3f %0.3f %0.3f gyro %0.3f %0.3f %0.3f"
+               , seq, port
+               , accelGyro[3]/16384.0, accelGyro[4]/16384.0, accelGyro[5]/16384.0
                , accelGyro[0]*radToDeg, accelGyro[1]*radToDeg, accelGyro[2]*radToDeg);
   }
   return true;
@@ -169,7 +171,7 @@ void loop(){
       udp.sendImuData(fingers ,buffer, i);
       seq = (seq + 1) % 255; 
     }
-    else if(foundIMU[i] == 2 && readMPUCore(i, buffer, seq)){
+    else if(foundIMU[i] == 2 && readBMI(i, buffer, seq)){
       udp.sendImuData(thumb ,buffer, i);
       seq = (seq + 1) % 255; 
       }

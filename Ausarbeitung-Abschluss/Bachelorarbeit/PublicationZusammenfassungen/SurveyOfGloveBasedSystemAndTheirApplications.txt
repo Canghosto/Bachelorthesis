@@ -1,0 +1,41 @@
+Abstract
+\begin{itemize}
+\item Es werden heutzutage viel verschiedene Eingabegeräte entwickelt zur Ermittlung von Menschlichen Bewegungen. 
+\item Durch diese Entwicklungen stoßen wir an Technologische Grenzen an, die wir im momentanen Zeitalter zu überwältigen haben. 
+\end{itemize}
+
+Glove-System
+\begin{itemize}
+\item Charakteristiken
+\begin{itemize}
+\item 2 DoF für die Finger, da sich Finger nicht drehen können kann ein DoF entfernt werden, damit entfernen wir somit auch die Größe und Komplexität des Systems und können es damit etwas optimieren, das wir eine Achsendrehung weniger ermitteln müssen
+\item Zeiger Finger bis zum Kleinen Finger besitzen 2 DoF, während der Daumen einen 3 DoF besitzt für Rotation in Richtung der anderen Fingern
+\item Somit können wir auch die Datenrate reduzieren
+\end{itemize}
+\item Early Research - History
+\begin{itemize}
+\item MIT-LED glove, der erste approach für visuelles tracking (Kamerabasiertes) mit led lichtern im 1980s
+\item Digital Entry Data Glove - Gary Grimes
+\begin{itemize}
+\item 1983
+\item Sensoren auf Stoff, berührungs oder proximity sensors zum messen ob der Daumen eines der anderen teile der hand berührte
+\item vier "knuckle-bend sensors" für flexion measurement
+\item Verwendung zum erstellen von alphanummerial characters durch die handposition
+\end{itemize}
+\end{itemize}
+\item Current Technology
+\begin{itemize}
+\item CyberGlove - James Kramer: Center of Design Research at Standford University, 18 sensor(flexion sensor) or 22 piezo-resistive sensor, Calibration is needed. Different finger lengths and thickness and convert sensor voltage to joint angles
+\item Humanglove - Humanware Sel, Pisa Italy. 1997 patentiert. 20 Halleffect sensors that measures flexion/extension 
+\end{itemize}
+\end{itemize}
+
+Application
+\begin{itemize}
+\item Summary of Applications, verwende die Grafik und gib eine kurze Erklärung dazu für die einzelnen wichtigeren Punkte, Robotics, Sign Laguage, medicine.
+\end{itemize}
+
+
+
+
+

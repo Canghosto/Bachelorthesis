@@ -1,0 +1,44 @@
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+% Einleitung
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+% -----------------------------------------------------------------------
+\chapter{Einleitung}
+
+Das Thema dieser Abschlussarbeit wird die Modellierung und den Bau zweier Datenhandschuhe umfassen. Zunächste wird eine Einleitung zu diesem  Thema beschrieben, mit einer Zielsetzung und dem Ablauf des Projektes. Welchen Anwendungsbereich und was für  Abgrenzungen stattfinden werden
+
+\section{Zielsetzung}
+Diese Arbeit wird sich damit beschäftigen, zwei Datenhandschuh aus drei unterschiedlichen Sensormodellen zu entwickeln basierend aus den Daten von integrierten IMUs an den Fingern und dem Handrücken. Dieses hängt direkt an der Abschlussarbeit von Paul Bienkowski und Carolin Konietzny an und wird eine zweite Version des ähnlichen Handschuhes mit Verwendung von drei verschiedenen IMU Typen. Das Ziel dieser Bachelorarbeit wird es sein, zwei funktionierenden Datenhandschuhe zu entwerfen, die für das Aufzeichnen von menschlichen Handbewegungen dienen und für den eventuellen Gebrauch als Fernsteuerung für eine Roboterhand. Im zweitens Teil werden beide IMU Typen für die Finger verglichen und ausgewertet.
+
+Zusammenfassend werden diese Punkt bearbeitet:
+\begin{itemize}
+\item Entwicklung von zwei Datenhandschuhe basierend aus IMU Sensoren mit den Modellen MPU-6050 und BMI160 für die Finger Sensoren und dem MPU-9250 für den Handrücken.
+
+\item Vergleich des MPU-6050 und BMI160 auf Anwendung der Genauigkeit und Fehlertoleranz. 
+
+\item Verwendung des Sensormodelles MPU-9250, mit Benutzung des Magnetometers neben Gyroskope und Accelormeter.
+
+\end{itemize}
+
+Diesbezüglich werde ich auch genauer auf die einzelnen Module und Komponenten des Datenhandschuhes eingehen. Wie die Sensormodelle funktionieren, welche Vorteile der Datenhandschuh gegenüber den anderen schon existierenden Datenhandschuhe hat und was für eine Software-Architektur ich hierfür verwendet habe.
+
+\section{Anwendungsbereich}
+Das Projekt soll für zukünftige Anwendungen am Informatikum zur Verfügung stehen, im Bereich Robotik und weiteren ähnlichen Gebieten mit der Möglichkeit diesen zu erweitern. 
+
+\section{Abgrenzung} 
+
+Der Umfangreiche aspekt dieser Arbeit kann weit ausgebaut werden, jedoch wird diese Arbeit sich nur auf bestimmte Bereiche auseinander setzen. Hierbei wird es sich nur um einen Prototypen handeln und um keinen vollständigen Produkt. 
+Dabei werden folgenden Abgrenzungen eingehalten:
+
+\begin{itemize}
+\item Es wird stark auf Modularität gesetzt, wobei ein stabiler und einzelner Handschuh nicht gebaut wird. Für den Gebrauch an unterschiedlichen Handtypen werden mehrere Komponenten gebaut, um diese anpassbar zu gestalten, wobei der Handschuh deswegen komplexer gebaut ist.
+
+\item Visuelles tracking mit dem Handschuh wird nicht berücksichtigt, obwohl dieser mit LEDs bestattet wird. 
+
+\item Verwendung des Sensormodelles MPU-9250, mit Benutzung des Magnetometers neben Gyroskope und Accelormeter.
+
+\item Kalibrierung wird nicht mit berücksichtigt
+\end{itemize}
+Dieses sind die Punkte, welche im Laufe der Entwicklung berücksichtigt werden.

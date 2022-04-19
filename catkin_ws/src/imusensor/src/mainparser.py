@@ -41,13 +41,12 @@ class Parser:
             while True:
                 if hasattr(self, 'ser'):
                     data = self.ser.readline()
-                    data = data.decode().split()
+                    data = data.decode("utf-8").split()
                     if data[0] == '\x01' or data[0]== '\x03':
                         yield self.parsing(data)
                 else:
                     data = self.socket.recv(1024)
                     data = data.decode("utf-8").split()
-                    print(data)
                     if data[0] == '\x01' or data[0]== '\x03':
                         yield self.parsing(data)
 
@@ -72,7 +71,6 @@ class Parser:
                 result = ImuEvent_RF(seq_number, imu_index, accelValues, gyroValues)
             elif imu_index == 5:
                 result = ImuEvent_LF(seq_number, imu_index, accelValues, gyroValues)
-
         elif data[0]== '\x03':
             (packet_id, seq_number, imu_index,
              str_accel, ax, ay, az, str_gyro, gx, gy, gz, str_mag, mx, my, mz) = \

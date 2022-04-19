@@ -1,4 +1,8 @@
 #include"DFRobot_BMI160.h"
+#define SENSORS_GRAVITY_EARTH (9.80665F) /**< Earth's gravity in m/s^2 */
+#define SENSORS_GRAVITY_STANDARD (SENSORS_GRAVITY_EARTH)
+
+
 const uint8_t int_mask_lookup_table[13] = {
     BMI160_INT1_SLOPE_MASK,
     BMI160_INT1_SLOPE_MASK,
@@ -538,9 +542,9 @@ int8_t DFRobot_BMI160::getAccelGyroData( int16_t* data)
     data[0]=Ogyro->x;
     data[1]=Ogyro->y;
     data[2]=Ogyro->z;
-    data[3]=Oaccel->x;
-    data[4]=Oaccel->y;
-    data[5]=Oaccel->z;
+    data[3]=Oaccel->x * SENSORS_GRAVITY_STANDARD;
+    data[4]=Oaccel->y * SENSORS_GRAVITY_STANDARD;
+    data[5]=Oaccel->z * SENSORS_GRAVITY_STANDARD;
   }
   return rslt;
 }
